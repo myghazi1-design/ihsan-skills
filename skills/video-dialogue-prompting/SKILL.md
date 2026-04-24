@@ -1,6 +1,6 @@
 ---
 name: video-dialogue-prompting
-description: Use when writing Kling 3.0 video prompts with on-screen dialogue, lip-sync, character conversation, interrogation scenes, multilingual speech, or native-audio output. Enforces the fal.ai P1-P4 principles (structured naming, visual anchoring, audio details, temporal control) and the [Character A: Role, tone]: "Line." syntax so speech doesn't merge, identities don't drift, and lip-sync holds. Kling-only — Seedance 2.0, Mikos, Nano Banana do not ship native audio today.
+description: "Use when writing Kling 3.0 video prompts with on-screen dialogue, lip-sync, character conversation, interrogation scenes, multilingual speech, or native-audio output. Enforces the fal.ai P1-P4 principles (structured naming, visual anchoring, audio details, temporal control) and the [Character A: Role, tone]: \"Line.\" syntax so speech doesn't merge, identities don't drift, and lip-sync holds. Kling-only — Seedance 2.0, Mikos, Nano Banana do not ship native audio today."
 ---
 
 # Video Dialogue Prompting
