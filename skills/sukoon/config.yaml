@@ -1,0 +1,9 @@
+# Sukoon orchestrator global config
+default_stage_mode: live      # override per-run via brief.stage_mode
+default_budget_usd_cap: 20
+default_revision_budget_per_stage: 3
+poll_interval_s: 30
+detach_wall_time_s: 300       # 5 min per-stage poll before auto-detach
+total_stage_timeout_s: 1800   # 30 min per-stage hard timeout (5 min poll + 25 min detached)
+adapters_dir: Projects/ihsan/sukoon/adapters
+lib_dir: Projects/ihsan/sukoon/lib

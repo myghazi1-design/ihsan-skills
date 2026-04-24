@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sukoon · {{STAGE_NAME}} · {{RUN_ID}}</title>
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --fg: #1d1d1f;
+    --muted: #6e6e73;
+    --rule: #d2d2d7;
+    --card: #ffffff;
+    --accent: #0071e3;
+    --accent-soft: #e8f1ff;
+    --warn: #ff9f0a;
+    --ok: #30d158;
+    --crit: #ff3b30;
+    --radius: 18px;
+    --shadow: 0 10px 40px -10px rgba(0,0,0,0.12), 0 2px 6px -2px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 64px 32px 128px; }
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(251,251,253,0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav b { color: var(--fg); font-weight: 600; }
+  .nav .run-id { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; }
+  h1 {
+    font-size: 56px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  h2 {
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+    margin: 56px 0 20px;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+  p { margin: 0 0 14px; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 40px; }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    color: var(--fg);
+  }
+  .pill.accent { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+  .pill.warn   { background: #fff4e4; border-color: transparent; color: var(--warn); }
+  .pill.ok     { background: #e6f9ea; border-color: transparent; color: var(--ok); }
+  .pill.crit   { background: #ffe9e7; border-color: transparent; color: var(--crit); }
+  .pill::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.9;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin: 16px 0;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  tr:last-child td { border-bottom: none; }
+  pre, code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #f5f5f7;
+    border-radius: 10px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 10px 0;
+    border: 1px solid var(--rule);
+  }
+  code {
+    background: #f5f5f7;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .handoff {
+    border-left: 3px solid var(--accent);
+    padding: 18px 22px;
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+    margin: 24px 0;
+  }
+  .handoff .eyebrow { color: var(--accent); margin-bottom: 6px; }
+  .reply-box {
+    background: #111;
+    color: #e8e8ed;
+    border-radius: var(--radius);
+    padding: 32px;
+    margin: 40px 0 16px;
+  }
+  .reply-box h3 { color: #fff; margin: 0 0 16px; }
+  .reply-box .verb {
+    display: block;
+    background: #1d1d1f;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 14px;
+    color: #e8e8ed;
+    border: 1px solid #2c2c2e;
+  }
+  .reply-box .verb .desc {
+    display: block;
+    margin-top: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    color: #9b9ba2;
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .meta div {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .meta .label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .meta .value { font-size: 15px; font-weight: 500; }
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .thumb {
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .thumb img, .thumb video {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    background: #f5f5f7;
+  }
+  .thumb .caption {
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .thumb .caption b { color: var(--fg); font-weight: 600; }
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  .placeholder-note {
+    background: #fff4e4;
+    border-left: 3px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #8a5a00;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <b>Sukoon</b>
+  <span class="run-id">{{RUN_ID}}</span>
+</nav>
+
+<main>
+
+  <!-- ── Hero ── -->
+  <section>
+    <div class="eyebrow">{{STAGE_NAME_UPPER}} · ready for review</div>
+    <h1>{{STAGE_DISPLAY_NAME}}</h1>
+    <p style="font-size:18px; color:var(--muted); max-width:720px;">{{STAGE_TAGLINE}}</p>
+
+    <div class="pills">
+      <span class="pill accent">Director: {{DIRECTOR_NAME}}</span>
+      <span class="pill">Revisions {{REVISIONS_USED}} / {{REVISION_BUDGET}}</span>
+      <span class="pill ok">Status: ready for review</span>
+      {{OPTIONAL_STATUS_PILLS}}
+    </div>
+  </section>
+
+  <!-- ── Meta grid ── -->
+  <section class="meta">
+    <div>
+      <div class="label">Run</div>
+      <div class="value">{{RUN_ID}}</div>
+    </div>
+    <div>
+      <div class="label">Started</div>
+      <div class="value">{{STARTED_AT}}</div>
+    </div>
+    <div>
+      <div class="label">Finished</div>
+      <div class="value">{{FINISHED_AT}}</div>
+    </div>
+    <div>
+      <div class="label">Tokens used (this stage)</div>
+      <div class="value">{{STAGE_TOKENS}}</div>
+    </div>
+  </section>
+
+  <!-- ── Stage-specific output ── -->
+  <section>
+    <h2>Output</h2>
+    {{OUTPUT_CONTENT}}
+  </section>
+
+  <!-- ── Placeholder note (Stage 1 dry-run only) ── -->
+  {{PLACEHOLDER_NOTE_IF_DRY_RUN}}
+
+  <!-- ── Handoff ── -->
+  <section>
+    <h2>Handoff</h2>
+    <div class="handoff">
+      <div class="eyebrow">To next director</div>
+      <p>{{HANDOFF_NOTES}}</p>
+      <p style="margin:0; color:var(--muted); font-size:13px;">Next: <b>{{NEXT_DIRECTOR_NAME}}</b></p>
+    </div>
+  </section>
+
+  <!-- ── Reply box ── -->
+  <section class="reply-box">
+    <h3>Your options</h3>
+    <span class="verb">approve
+      <span class="desc">Proceed to {{NEXT_DIRECTOR_NAME}}</span>
+    </span>
+    <span class="verb">revise: {your notes}
+      <span class="desc">Re-run {{DIRECTOR_NAME}} with targeted patches</span>
+    </span>
+    <span class="verb">fork
+      <span class="desc">Branch a new run from this stage (sibling run-id with <code>-fork-{a..z}</code>)</span>
+    </span>
+    <span class="verb">abort
+      <span class="desc">Mark run failed, write post-mortem</span>
+    </span>
+  </section>
+
+  <footer>
+    Generated by Sukoon · Stage 1 dry-run · {{GENERATED_AT}} ·
+    <a href="../../../README.md">Sukoon home</a>
+  </footer>
+
+</main>
+
+</body>
+</html>
