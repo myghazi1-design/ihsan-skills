@@ -1,0 +1,21 @@
+{
+  "name": "ihsan-skills",
+  "owner": {
+    "name": "Yasir Ghazi"
+  },
+  "metadata": {
+    "description": "AI video production skills for Claude Code — Seedance 2.0, Kling 3.0, Nano Banana Pro, ElevenLabs, Mikos UGC, and the Sukoon director-agent pipeline.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ihsan",
+      "source": "./plugins/ihsan",
+      "description": "AI video production skills — Seedance 2.0, Kling 3.0, Nano Banana Pro, ElevenLabs, Mikos UGC, and the Sukoon director-agent pipeline that chains them end to end.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Yasir Ghazi"
+      }
+    }
+  ]
+}
