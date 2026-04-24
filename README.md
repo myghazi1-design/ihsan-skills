@@ -6,14 +6,14 @@ A 14-skill plugin covering the full AI video stack: image reference generation, 
 
 ```
 /plugin marketplace add myghazi1-design/ihsan-skills
-/plugin install ihsan@myghazi1-design-ihsan-skills
+/plugin install ihsan@ihsan-skills
 ```
 
-Skills activate as `/ihsan:<skill-name>` (e.g. `/ihsan:sukoon`, `/ihsan:seedanceX`).
+Skills activate as `/ihsan:<skill-name>` (e.g. `/ihsan:sukoon`, `/ihsan:seedanceX`). Restart Claude Code after install for the skill list to refresh.
 
 To update after a new version is pushed:
 ```
-/plugin marketplace update
+/plugin marketplace update ihsan-skills
 ```
 
 ## What's inside
@@ -51,12 +51,16 @@ To update after a new version is pushed:
 
 ```
 .claude-plugin/
-  plugin.json              Plugin manifest
-skills/
-  {skill-name}/
-    SKILL.md               Executable skill (frontmatter + body)
-    references/            Reference material (strategy, voice, templates)
-    config.yaml            Optional per-skill config (sukoon only)
+  marketplace.json         Marketplace manifest — lists the ihsan plugin
+plugins/
+  ihsan/
+    .claude-plugin/
+      plugin.json          Plugin manifest
+    skills/
+      {skill-name}/
+        SKILL.md           Executable skill (frontmatter + body)
+        references/        Reference material (strategy, voice, templates)
+        config.yaml        Optional per-skill config (sukoon only)
 ```
 
 ## Caveats
